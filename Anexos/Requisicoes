@@ -1,0 +1,222 @@
+📊 1. ConsultaController (Relatórios e Dashboards)
+Focado em leitura de dados e indicadores.
+
+Listar Relatório Geral de OS
+Retorna uma visão geral das ordens de serviço. Pode aceitar filtros opcionais.
+
+Método: GET
+
+URL: http://localhost:8080/consulta/relatorioOrdensServico
+
+Listar Ordens em Aberto
+Retorna apenas as OS que ainda não foram concluídas (prioridade alta).
+
+Método: GET
+
+URL: http://localhost:8080/consulta/ordensAberto
+
+Materiais Abaixo do Ponto de Reposição
+Alerta de estoque. Mostra produtos que precisam ser comprados.
+
+Método: GET
+
+URL: http://localhost:8080/consulta/materiaisAbaixoPontoReposicao
+
+Timeline (Histórico) da OS
+Mostra toda a movimentação de uma OS específica (quem abriu, quem atendeu, mudanças de status).
+
+Método: GET
+
+URL: http://localhost:8080/consulta/timelineOrdemServico?id=1
+
+Parâmetros:
+
+id: ID da Ordem de Serviço (Inteiro)
+
+KPI: Ordens Concluídas por Tipo
+Estatística de quantas ordens foram fechadas em um determinado ano, agrupadas por tipo.
+
+Método: GET
+
+URL: http://localhost:8080/consulta/ordensConcluidasPorTipo?ano=2024
+
+Parâmetros:
+
+ano: Ano de referência (Inteiro, ex: 2024)
+
+KPI: Consumo por Equipe
+Mostra quanto material cada equipe gastou em um período.
+
+Método: GET
+
+URL: http://localhost:8080/consulta/consumoPorEquipe?inicio=2024-01-01&fim=2024-12-31
+
+Parâmetros:
+
+inicio: Data inicial (Formato: YYYY-MM-DD)
+
+fim: Data final (Formato: YYYY-MM-DD)
+
+📦 2. EstoqueController (Gestão de Materiais)
+Controle de saldo e movimentações.
+
+Buscar Saldo Específico
+Verifica quanto existe de um produto específico em um local específico.
+
+Método: GET
+
+URL: http://localhost:8080/estoque/buscar?variacaoId=1&localId=2
+
+Parâmetros:
+
+variacaoId: ID da variação do produto.
+
+localId: ID do local de estoque (ex: Almoxarifado Central).
+
+Listar Todo o Estoque
+Lista geral de todos os produtos e seus saldos atuais.
+
+Método: GET
+
+URL: http://localhost:8080/estoque/listar
+
+Movimentar Estoque (Entrada/Saída)
+Registra uma entrada ou saída de material.
+
+Método: POST
+
+URL: http://localhost:8080/estoque/movimentar
+
+Body (JSON):
+
+JSON
+
+{
+    "variacaoId": 1,
+    "localId": 1,
+    "quantidade": 50.5,
+    "tipoMovimentoId": 1,
+    "funcionarioId": 1,
+    "osId": null,
+    "observacao": "Compra de material urgente"
+}
+🛠️ 3. OrdemServicoController (Operação)
+Criação e trâmite de chamados.
+
+Listar Todas as OS
+Lista simples das ordens cadastradas.
+
+Método: GET
+
+URL: http://localhost:8080/ordemServico/listar
+
+Buscar OS por ID
+Detalhes completos de uma OS específica.
+
+Método: GET
+
+URL: http://localhost:8080/ordemServico/buscar?id=1
+
+Listar Itens da OS
+Retorna os materiais que foram consumidos/usados nesta ordem de serviço.
+
+Método: GET
+
+URL: http://localhost:8080/ordemServico/itens?osId=1
+
+Criar Nova OS
+Abre um novo chamado no sistema.
+
+Método: POST
+
+URL: http://localhost:8080/ordemServico/criar
+
+Body (JSON):
+
+JSON
+
+{
+    "numero_sequencial": "OS-2024-001",
+    "solicitante_id": 1,
+    "area_campus_id": 2,
+    "tipo_os_id": 1,
+    "equipe_id": null,
+    "lider_id": null,
+    "status_id": 1,
+    "prioridade": 1,
+    "data_prevista": "2024-12-25",
+    "descricao_problema": "Ar condicionado parou de funcionar na sala 302"
+}
+Atualizar Status (Tramitar)
+Muda a fase da OS (ex: de Aberta para Em Andamento) e registra o histórico.
+
+Método: PUT (ou POST)
+
+URL: http://localhost:8080/ordemServico/atualizarStatus
+
+Body (JSON):
+
+JSON
+
+{
+    "osId": 1,
+    "statusNovoId": 2,
+    "funcionarioId": 5,
+    "descricao": "Iniciado o atendimento técnico."
+}
+👤 4. PessoaController (Cadastros)
+Gestão de usuários, funcionários e solicitantes.
+
+Listar Pessoas
+Lista todas as pessoas cadastradas.
+
+Método: GET
+
+URL: http://localhost:8080/pessoa/listar
+
+Buscar Pessoa por ID
+Dados detalhados de uma pessoa.
+
+Método: GET
+
+URL: http://localhost:8080/pessoa/buscar?id=1
+
+Salvar Nova Pessoa
+Cadastra um novo usuário no banco.
+
+Método: POST (Corrigido de GET)
+
+URL: http://localhost:8080/pessoa/salvar
+
+Body (JSON):
+
+JSON
+
+{
+    "nome": "João da Silva",
+    "cpf": "12345678900",
+    "matricula_siape": "SIAPE1235",
+    "email": "joao@email.com",
+    "telefone": "8599999-9999",
+    "ativo": true
+}
+Atualizar Pessoa
+Edita os dados de uma pessoa existente.
+
+Método: PUT (Corrigido de GET)
+
+URL: http://localhost:8080/pessoa/atualizar
+
+Body (JSON):
+
+JSON
+
+{
+    "id": 1,
+    "nome": "João da Silva Editado",
+    "cpf": "1234567900",
+    "matricula_siape": "SIAPE12345",
+    "email": "joao.novo@email.com",
+    "telefone": "(85) 88888-8888",
+    "ativo": true
+}
