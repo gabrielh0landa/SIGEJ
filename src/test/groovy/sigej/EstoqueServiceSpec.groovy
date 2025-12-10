@@ -1,9 +1,9 @@
-package manutencao
+package sigej
 
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class PessoaServiceSpec extends Specification implements ServiceUnitTest<PessoaService>{
+class EstoqueServiceSpec extends Specification implements ServiceUnitTest<EstoqueService>{
 
     def setup() {
     }

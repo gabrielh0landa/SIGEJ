@@ -1,9 +1,9 @@
-package manutencao
+package sigej
 
-import grails.testing.services.ServiceUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class OrdemServicoServiceSpec extends Specification implements ServiceUnitTest<OrdemServicoService>{
+class ConsultaControllerSpec extends Specification implements ControllerUnitTest<ConsultaController> {
 
     def setup() {
     }

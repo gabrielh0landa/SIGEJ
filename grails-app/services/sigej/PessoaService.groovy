@@ -1,33 +1,35 @@
-package manutencao
+package sigej
 
+import grails.gorm.transactions.Transactional
 import groovy.sql.GroovyRowResult
 
+@Transactional
 class PessoaService {
 
     def groovySql
 
     List<GroovyRowResult> listarPessoas() {
         String sql = '''
-            select id, nome, cpf, email, telefone, ativo
-            from pessoa
-            order by nome
+            SELECT id, nome, cpf, email, telefone, ativo
+              FROM pessoa
+             ORDER BY nome
         '''
         groovySql.rows(sql)
     }
 
     GroovyRowResult buscarPessoaPorId(Long id) {
         String sql = '''
-            select id, nome, cpf, email, telefone, ativo
-            from pessoa
-            where id = :id
+            SELECT id, nome, cpf, email, telefone, ativo
+              FROM pessoa
+             WHERE id = :id
         '''
         groovySql.firstRow(sql, [id: id])
     }
 
     void inserirPessoa(Map dados) {
         String sql = '''
-            insert into pessoa (nome, cpf, matricula_siape, email, telefone, ativo)
-            values (:nome, :cpf, :matricula, :email, :telefone, :ativo)
+            INSERT INTO pessoa (nome, cpf, matricula_siape, email, telefone, ativo)
+            VALUES (:nome, :cpf, :matricula, :email, :telefone, :ativo)
         '''
         groovySql.executeInsert(sql, [
                 nome      : dados.nome,
@@ -41,14 +43,14 @@ class PessoaService {
 
     void atualizarPessoa(Long id, Map dados) {
         String sql = '''
-            update pessoa
-               set nome = :nome,
+            UPDATE pessoa
+               SET nome = :nome,
                    cpf = :cpf,
                    matricula_siape = :matricula,
                    email = :email,
                    telefone = :telefone,
                    ativo = :ativo
-             where id = :id
+             WHERE id = :id
         '''
         groovySql.executeUpdate(sql, [
                 id        : id,
@@ -62,7 +64,7 @@ class PessoaService {
     }
 
     void excluirPessoa(Long id) {
-        String sql = 'delete from pessoa where id = :id'
+        String sql = 'DELETE FROM pessoa WHERE id = :id'
         groovySql.executeUpdate(sql, [id: id])
     }
 }
